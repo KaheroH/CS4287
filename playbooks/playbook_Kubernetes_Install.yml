@@ -11,24 +11,43 @@
 #
  
                      # the task to be performed
+
 - name: Installing prereqs
   apt: 
     name: [apt-transport-https, gnupg2, curl]
     update_cache: yes
-  
-- name: coppying a file to couchdb.list
-  shell: echo "deb https://apt.kubernetes.io/kubernetes-xenialmain" \
-   | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    
+- name: Remove swapfile from /etc/fstab
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  with_items:
+    - swap
+    - none
 
-- name: Obtaining a key from ubuntu keyserver
-  apt_key: 
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: 6A030B21BA07F4FB
-    state: present
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
 
-- name: Installing prereqs
+- name: coppying a file to kubernetes.list
+  shell: echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" \
+   | sudo tee -a /etc/apt/sources.list.d/kubernetes.list  
+     
+- name: Installing
   apt: 
     name: [kubeadm, kubelet, kubectl, kubernetes-cni]
     update_cache: yes
+    
+# - name: Configure node ip
+    # lineinfile:
+      # path: /etc/default/kubelet
+      # line: KUBELET_EXTRA_ARGS=--node-ip=129.
+
+# - name: Restart kubelet
+  # service:
+    # name: kubelet
+    # daemon_reload: yes
+    # state: restarted
 ...
 

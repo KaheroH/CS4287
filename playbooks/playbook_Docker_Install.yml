@@ -20,16 +20,33 @@
   apt: 
     name: [apt-transport-https, ca-certificates, curl, gnupg-agent, software-properties-common]
     update_cache: yes
-  
-- name: Obtaining a key from docker webserver
-  rpm_key: 
+
+- name: Add Docker GPG apt Key
+  apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-    fingerprint: 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88
 
-- name: Add the "stable release" Docker repository
-  repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release-cs) stable
-  state: present
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=latest
+
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+        
+# - name: Obtaining a key from docker webserver
+  # rpm_key: 
+    # url: https://download.docker.com/linux/ubuntu/gpg
+    # state: present
+    # fingerprint: 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88
+
+# - name: Add the "stable release" Docker repository
+  # repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release-cs) stable
+  # state: present
 
 - name: Installing prereqs
   apt: 

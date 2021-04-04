@@ -1,0 +1,84 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook, we will show how to remove an installed package via
+# the aptitude module
+#
+ 
+                     # the task to be performed
+
+
+- name: Modify Firewall
+  ansible.builtin.shell: ufw limit 5984
+
+  
+- name: Installing gnupg and ca-certificates
+  apt: 
+    name: ['gnupg', 'ca-certificates']
+    update_cache: yes
+    
+- name: Adding key from a the ubuntu keyserver
+  apt_key: 
+    keyserver: keyserver.ubuntu.com 
+    id: 8756C4F765C9AC3CB6B85D62379CE192D401AB61 
+    state: present
+  
+- name: coppying a file to couchdb.list
+  shell: echo "deb https://apache.bintray.com/couchdb-deb bionic main" \
+   | sudo tee /etc/apt/sources.list.d/couchdb.list
+
+
+- name: set debconf 1
+  debconf:
+    name: couchdb/mode
+    question: couchdb/mode
+    value: 'standalone'
+    vtype: select
+    unseen: no
+
+- name: set debconf 2
+  debconf:
+    name: couchdb/bindaddress
+    question: couchdb/bindaddress
+    value: 0.0.0.0
+    vtype: string
+    unseen: no
+
+- name: set debconf 3
+  debconf:
+    name: couchdb/adminpass
+    question: couchdb/adminpass
+    value: password123
+    vtype: password
+    unseen: no
+  no_log: True
+
+- name: set debconf 4
+  debconf:
+    name: couchdb/adminpass_again
+    question: couchdb/adminpass_again
+    value: password123
+    vtype: password
+    unseen: no
+  no_log: True
+        
+- name: install couchdb
+  shell: DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --force-yes couchdb
+  args:
+    chdir: ~/
+
+- name: install dependencies
+  shell: sudo apt-get --no-install-recommends -y install \
+    build-essential pkg-config erlang \
+    libicu-dev libmozjs185-dev libcurl4-openssl-dev
+
+- name: install couchdb python
+  pip:
+    name: CouchDB
+...
+

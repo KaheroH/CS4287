@@ -1,0 +1,39 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook, we will show how to remove an installed package via
+# the aptitude module
+#
+ 
+                     # the task to be performed
+- name: Remove old versions of Docker if present
+  apt:
+    name: [docker, docker-engine, docker.io, containerd, runc]
+    state: absent
+
+- name: Installing prereqs
+  apt: 
+    name: [apt-transport-https, ca-certificates, curl, gnupg-agent, software-properties-common]
+    update_cache: yes
+  
+- name: Obtaining a key from docker webserver
+  rpm_key: 
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+    fingerprint: 9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88
+
+- name: Add the "stable release" Docker repository
+  repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release-cs) stable
+  state: present
+
+- name: Installing prereqs
+  apt: 
+    name: [docker-ce, docker-ce-cli, containerd.io]
+    update_cache: yes
+...
+

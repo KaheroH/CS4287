@@ -1,0 +1,117 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2017
+# Modified: Fall 2020
+#
+# This playbook is our demo master file
+# The goal is to show how to have a single master file which then
+# includes multiple plays according to some well-designed choreography
+#
+# This file is similar to the one in the AnsibleOnly_Local_and_Cloud folder
+# For now I just kept one play in here but feel free to add more
+  
+
+
+
+- name: "Play 1: Create VMs on Chameleon"
+  hosts: MyLocalVMs
+  remote_user: vagrant
+  collections:
+   - ansible-base
+   - openstack.cloud.collection
+ 
+  tasks:
+  - import_tasks: ./playbook_create_cloud_vm.yml
+
+- name: "Play 2: Install Kafka"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - include_tasks: ./playbook_install_app_on_cloud_vm.yml
+  
+- name: "Play 3a: Edit Server Properties on VM2"
+  hosts: VM2
+  remote_user: cc
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - include_tasks: ./playbook_edit_server_properties1.yml
+  
+- name: "Play 3b: Edit Server Properties on VM3"
+  hosts: VM3
+  remote_user: cc
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - include_tasks: ./playbook_edit_server_properties2.yml
+
+- name: "Play 4: Copy Consumer Code over to Cloud VM3"
+  hosts: VM3
+  remote_user: cc
+  collections: ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_copy_consumer_vm2.yml
+  
+- name: "Play 4: Copy local.ini to VM3"
+  hosts: VM3
+  remote_user: cc
+  collections: ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_copy_localini_vm3.yml
+
+- name: "Play 5: Install CouchDB"
+  hosts: VM3
+  remote_user: cc
+  become: yes
+  gather_facts: yes
+  collections:
+   - ansible-base
+   
+  tasks:
+  - import_tasks: ./playbook_CouchDB_Install.yml
+
+- name: "Play 6: Start Zookeeper on VM2"
+  hosts: VM2
+  remote_user: cc
+  collections: ansible-base
+  become: yes
+  tasks:
+  - import_tasks: ./playbook_install_java.yml
+  - import_tasks: ./playbook_start_zookeeper.yml
+  
+- name: "Play 7: Start Kafka Brokers"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_start_kafka_server.yml
+
+- name: "Play 8: Run Consumer Code"
+  hosts: VM3
+  remote_user: cc
+  tasks: 
+  - include_tasks: ./playbook_run_consumer.yml
+
+- name: "Play 9: Delete Cloud VMs"
+  hosts: MyLocalVMs
+  remote_user: cc
+  tasks: 
+  - include_tasks: ./playbook_remove_cloud_VMs.yml
+  
+...
+

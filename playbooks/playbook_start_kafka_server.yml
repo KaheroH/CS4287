@@ -1,0 +1,18 @@
+---
+- name: Modify Firewall 1
+  ansible.builtin.shell: ufw limit 9092
+  
+- name: Modify Firewall 2
+  ansible.builtin.shell: ufw limit 2128
+
+- name: Modify Firewall 3
+  ansible.builtin.shell: ufw limit 2181
+
+- name: Start Kafka Server
+  ansible.builtin.shell: nohup ./kafka_2.13-2.7.0/bin/kafka-server-start.sh ./kafka_2.13-2.7.0/config/server.properties &
+  
+- name: Wait for Kafka Server to Start Up
+  pause:
+    seconds: 15
+
+...

@@ -1,0 +1,28 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Kahero Harriott
+# Created: Spring 2021
+# Modified: N/A
+#
+# This playbook will execute a command on the remote machine
+# Horizon Cloud VM or Chameleon VMs or AWS VMs
+# See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+- name: "Edit server properties"
+  ansible.builtin.lineinfile:
+    path: ./kafka_2.13-2.7.0/config/server.properties
+    # Line to Search/Match against
+    regexp: '{{item.From}}'
+    # Line to Replace with
+    line: '{{item.To}}'
+ 
+  with_items:
+   - { From: 'broker.id=0', To: 'broker.id=1'}
+   - { From: '#listeners=PLAINTEXT://:9092', To: 'listeners=PLAINTEXT://:9092'}
+   - { From: '#advertised.listeners=PLAINTEXT://your.host.name:9092', To: 'advertised.listeners=PLAINTEXT://129.114.26.34:9092'}
+   - { From: '#listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL', To: 'listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL'}
+   - { From: 'offsets.topic.replication.factor=1', To: 'offsets.topic.replication.factor=2'}
+   - { From: 'transaction.state.log.replication.factor=1', To: 'transaction.state.log.replication.factor=2'}
+   - { From: 'zookeeper.connect=localhost:2181', To: 'zookeeper.connect=129.114.26.34:2181'}
+...
+

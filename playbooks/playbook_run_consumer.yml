@@ -1,0 +1,20 @@
+---
+# - name: Create Utilizations Topic
+  # ansible.builtin.shell: ./kafka_2.13-2.7.0/bin/kafka-topics.sh --create --topic utilizations --bootstrap-server 129.114.26.34:9092
+
+- name: Install Kafka-Python
+  ansible.builtin.pip:
+    name: kafka-python
+    
+- name: Run Consumer Code
+  ansible.builtin.shell: nohup python ~/consumer.py &
+  register: result            # this is a way to store output in a variable
+
+- debug: var=result.stdout_lines
+
+- name: Wait to Receive some Data
+  pause:
+    seconds: 30
+  
+
+...

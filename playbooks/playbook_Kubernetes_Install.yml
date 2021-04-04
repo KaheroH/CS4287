@@ -1,0 +1,34 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook, we will show how to remove an installed package via
+# the aptitude module
+#
+ 
+                     # the task to be performed
+- name: Installing prereqs
+  apt: 
+    name: [apt-transport-https, gnupg2, curl]
+    update_cache: yes
+  
+- name: coppying a file to couchdb.list
+  shell: echo "deb https://apt.kubernetes.io/kubernetes-xenialmain" \
+   | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+
+- name: Obtaining a key from ubuntu keyserver
+  apt_key: 
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 6A030B21BA07F4FB
+    state: present
+
+- name: Installing prereqs
+  apt: 
+    name: [kubeadm, kubelet, kubectl, kubernetes-cni]
+    update_cache: yes
+...
+

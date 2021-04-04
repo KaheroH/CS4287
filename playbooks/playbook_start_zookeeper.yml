@@ -1,0 +1,11 @@
+---
+#- name: Kill previous instance
+#  ansible.builtin.shell: sudo kill -9 $(sudo lsof -t -i:2181)
+
+- name: Start Zookeeper
+  ansible.builtin.shell: nohup ./kafka_2.13-2.7.0/bin/zookeeper-server-start.sh ./kafka_2.13-2.7.0/config/zookeeper.properties &
+
+- name: Wait for Zookeeper to Start Up
+  pause:
+    seconds: 15
+...

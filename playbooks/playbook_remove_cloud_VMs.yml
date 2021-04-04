@@ -1,0 +1,18 @@
+---
+- name: "Delete VM2"
+  openstack.cloud.server:
+    cloud: 
+    auth:
+      auth_url: https://kvm.tacc.chameleoncloud.org:5000/v3
+    state: absent
+    name: martin_vm
+
+- name: "Delete VM3"
+  openstack.cloud.server:
+    cloud: 
+    auth:
+      auth_url: https://kvm.tacc.chameleoncloud.org:5000/v3
+    state: absent
+    name: harriott_vm
+
+...

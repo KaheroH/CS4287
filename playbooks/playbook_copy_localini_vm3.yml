@@ -1,0 +1,6 @@
+---
+- name: Copy a file to another machine
+  ansible.builtin.copy:
+    src: ~/local.ini
+    dest: ~/local.ini 
+...

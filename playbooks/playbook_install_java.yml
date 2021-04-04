@@ -1,0 +1,10 @@
+---
+#
+# This playbook will install some packages on cloud VM
+# Our cloud can be Horizon Cloud VM or Chameleon VMs or AWS VMs
+- name: Update repositories cache and install Java
+  apt:
+    name: openjdk-8-jdk
+    update_cache: yes
+...
+

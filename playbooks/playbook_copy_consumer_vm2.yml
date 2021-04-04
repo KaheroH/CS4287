@@ -1,0 +1,20 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook, we will show how to remove an installed package via
+# the aptitude module
+#
+ 
+                     # the task to be performed
+- name: Copy a file to another machine
+  ansible.builtin.copy:
+    src: ~/code/consumer.py
+    dest: ~/consumer.py
+
+...
+

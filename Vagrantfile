@@ -85,48 +85,50 @@ Vagrant.configure("2") do |config|
   SHELL
   
  config.vm.provision "shell", inline: <<-SHELL
-	# sudo apt update
-	# sudo apt install software-properties-common
-	# sudo add-apt-repository ppa:deadsnakes/ppa
-	# sudo apt update
-	# sudo apt install -y python3.8
-	# sudo apt update
-    # sudo apt install -y python3-pip
-	# sudo apt-get install -y python3-setuptools
-	# sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-	# sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
-	# sudo update-alternatives --set python /usr/bin/python3.8
+	sudo apt update
+	sudo apt install software-properties-common
+	sudo add-apt-repository ppa:deadsnakes/ppa
+	sudo apt update
+	sudo apt install -y python3.8
+	sudo apt update
+  sudo apt install -y python3-pip
+	sudo apt-get install -y python3-setuptools
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
+	sudo update-alternatives --set python /usr/bin/python3.8
 	
-	# sudo -H pip3 install --upgrade ansible
-	# sudo pip3 install --upgrade decorator
-	# sudo python3 -m pip install --upgrade pip setuptools wheel
-	# sudo pip3 install --ignore-installed --upgrade openstacksdk
-	# sudo python3 -m pip install --upgrade openstacksdk
-	# sudo pip3 install --ignore-installed --upgrade openstacksdk future
-	# sudo ansible-galaxy collection install openstack.cloud
+	sudo -H pip3 install --upgrade ansible
+	sudo pip3 install --upgrade decorator
+	sudo python3 -m pip install --upgrade pip setuptools wheel
+	sudo pip3 install --ignore-installed --upgrade openstacksdk
+	sudo python3 -m pip install --upgrade openstacksdk
+	sudo pip3 install --ignore-installed --upgrade openstacksdk future
+	sudo ansible-galaxy collection install openstack.cloud
   SHELL
   
   # # let's also copy our ansible.cfg, MyInventory, cloud.yaml file, ssh key, and playbooks
-  # config.vm.provision "file", source: "./.ansible.cfg.txt", destination: "~/.ansible.cfg"
-  # config.vm.provision "file", source: "./MyInventory.txt", destination: "~/.ansible/MyInventory"
-  # config.vm.provision "file", source: "./clouds.yml", destination: "~/.config/openstack/clouds.yml"
-  # config.vm.provision "file", source: "./keys/martin_key", destination: "~/.ssh/martin_key"
-  # config.vm.provision "file", source: "./keys/kahero_key", destination: "~/.ssh/kahero_key"
-  
-  # config.vm.provision "file", source: "./playbooks/playbook_get_facts_local_vm.yml", destination: "~/tasks/playbook_get_facts_local_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_get_facts_cloud_vm.yml", destination: "~/tasks/playbook_get_facts_cloud_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_get_facts_cloud_vm.yml", destination: "~/tasks/playbook_install_app_on_local_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_remove_app_from_local_vm.yml", destination: "~/tasks/playbook_remove_app_from_local_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_install_app_on_cloud_vm.yml", destination: "~/tasks/playbook_install_app_on_cloud_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_remove_app_from_cloud_vm.yml", destination: "~/tasks/playbook_remove_app_from_cloud_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_exec_app_on_cloud_vm.yml", destination: "~/tasks/playbook_exec_app_on_cloud_vm.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_demo_master.yml", destination: "~/tasks/playbook_demo_master.yml"
-  # config.vm.provision "file", source: "./playbooks/playbook_edit_server_properties1.yml", destination: "~/tasks/playbook_edit_server_properties1.yml"	
-  # config.vm.provision "file", source: "./playbooks/playbook_edit_server_properties2.yml", destination: "~/tasks/playbook_edit_server_properties2.yml"	
-  
-  # config.vm.provision "file", source: "./producer.py", destination: "~/code/producer.py"	
-  # config.vm.provision "file", source: "./consumer.py", destination: "~/code/consumer.py"	
-	# config.vm.provision "file", source: "./local.ini", destination: "~/local.ini"
+  config.vm.provision "file", source: "./.ansible.cfg.txt", destination: "~/.ansible.cfg"
+  config.vm.provision "file", source: "./MyInventory.txt", destination: "~/.ansible/MyInventory"
+  config.vm.provision "file", source: "./clouds.yml", destination: "~/.config/openstack/clouds.yml"
+  config.vm.provision "file", source: "./keys/martin_key", destination: "~/.ssh/martin_key"
+  config.vm.provision "file", source: "./keys/kahero_key", destination: "~/.ssh/kahero_key"
+ 
+  config.vm.provision "file", source: "./playbooks/playbook_get_facts_local_vm.yml", destination: "~/tasks/playbook_get_facts_local_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_get_facts_cloud_vm.yml", destination: "~/tasks/playbook_get_facts_cloud_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_get_facts_cloud_vm.yml", destination: "~/tasks/playbook_install_app_on_local_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_remove_app_from_local_vm.yml", destination: "~/tasks/playbook_remove_app_from_local_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_install_app_on_cloud_vm.yml", destination: "~/tasks/playbook_install_app_on_cloud_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_remove_app_from_cloud_vm.yml", destination: "~/tasks/playbook_remove_app_from_cloud_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_exec_app_on_cloud_vm.yml", destination: "~/tasks/playbook_exec_app_on_cloud_vm.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_demo_master.yml", destination: "~/tasks/playbook_demo_master.yml"
+  config.vm.provision "file", source: "./playbooks/playbook_edit_server_properties1.yml", destination: "~/tasks/playbook_edit_server_properties1.yml"	
+  config.vm.provision "file", source: "./playbooks/playbook_edit_server_properties2.yml", destination: "~/tasks/playbook_edit_server_properties2.yml"
+
+  config.vm.provision :file, source: "./scafoldingcode", destination: "~/scafoldingcode"
+ 
+  config.vm.provision "file", source: "./producer.py", destination: "~/code/producer.py"	
+  config.vm.provision "file", source: "./consumer.py", destination: "~/code/consumer.py"	
+	config.vm.provision "file", source: "./local.ini", destination: "~/local.ini"
   
   # make sure the permissions on the  pem file are not too open.
   # Note, here I show you using inline and privileged: false so the inline

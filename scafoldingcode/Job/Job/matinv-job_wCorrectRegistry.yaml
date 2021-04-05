@@ -13,7 +13,7 @@ spec:                     # This is the specification where we can even put the 
       containers:
       - name: matinv       # this is going to be used for DNS name
         # Change the IP address to where you are running this
-        image: 192.168.15.3:5000/my-matinv   # this is the image in registry accessible
+        image: 129.114.26.34:5000/my-matinv   # this is the image in registry accessible
                                              # from all our workers
         imagePullPolicy: Always  # This forces the node to pull the image
         command: ["python3"]

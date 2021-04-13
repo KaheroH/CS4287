@@ -96,16 +96,16 @@
   # tasks:
   # - import_tasks: ./playbook_Docker_Install.yml
   
-- name: "Install Kubernetes"
-  hosts: MyChameleonVMs
-  remote_user: cc
-  become: yes
-  gather_facts: yes
-  collections:
-  - ansible-base
+# - name: "Install Kubernetes"
+#   hosts: MyChameleonVMs
+#   remote_user: cc
+#   become: yes
+#   gather_facts: yes
+#   collections:
+#   - ansible-base
   
-  tasks:
-  - import_tasks: ./playbook_Kubernetes_Install.yml  
+#   tasks:
+#   - import_tasks: ./playbook_Kubernetes_Install.yml  
 
 # - name: "Play 6: Start Zookeeper on VM2"
   # hosts: VM2
@@ -135,5 +135,39 @@
   # tasks: 
   # - include_tasks: ./playbook_remove_cloud_VMs.yml
   
+# - name: "Copy the Code folder over to both VMs"
+  # hosts: MyChameleonVMs
+  # remote_user: cc
+  # tasks:
+  # - include_tasks: ./playbook_copy_code.yml
+
+#- name: Remove the Kube cluster
+#  hosts: VM2
+#  remote_user: cc
+#  become: yes
+#  tasks:
+#  - include_tasks: ./playbook_remove_k8s_Cluster.yml
+
+#- name: Remove kube file
+#  hosts: MyChameleonVMs
+#  remote_user: cc
+#  become: yes
+#  tasks:
+#  - include_tasks: ./playbook_remove_netd.yml
+
+- name: Create the Kube cluster
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_start_k8s_Cluster.yml
+
+- name: Taint the master for Kube
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks: 
+  - include_tasks: ./playbook_taint_master.yml
+
 ...
 

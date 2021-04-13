@@ -1,0 +1,6 @@
+---
+- name: Tainting the master
+  shell: kubectl taint nodes kubemaster node-role.kubernetes.io/master:NoSchedule-
+
+...
+

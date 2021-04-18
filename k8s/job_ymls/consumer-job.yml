@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: consumer-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: harriott-vm
+      containers:
+      - name: couchdb
+        image: 129.114.26.34:5000/dockerimage1
+        imagePullPolicy: Always
+        #command: ["tail"]
+        #args: ["-f", "/dev/null"]
+        command: ["python3"]
+        args: ["consumer.py"]
+      restartPolicy: Never
+

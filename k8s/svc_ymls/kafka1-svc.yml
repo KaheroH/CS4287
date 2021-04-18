@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-one-svc
+spec:
+  type: NodePort   # by using NodePort, the service is publishe$
+  selector:
+    app: kafka-one     # used to match the pod(s) that run the $
+  ports:
+    - name: kafka-one-server-port    # not needed, but I have adde$
+      protocol: TCP     # this is default (so not needed either)
+      port: 9092   # the port used by the server inside the pod$
+      targetPort: 9092   # not sure if we need this because if $
+      nodePort: 30001  # this is what will be externally publis$
+...
+

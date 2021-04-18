@@ -10,17 +10,17 @@ from kafka import KafkaConsumer  # consumer of events
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-consumer = KafkaConsumer (bootstrap_servers="129.114.26.34:9092")
+consumer = KafkaConsumer (bootstrap_servers="129.114.26.34:30001")
 
 consumer.subscribe (topics=["utilizations"])
 
-couch = couchdb.Server('http://admin:password123@129.114.26.247:5984/')
+couch = couchdb.Server('http://admin:password@129.114.26.247:30002/')
 
 
-if "pa2" in couch:
-    database = couch["pa2"]
+if "pa3" in couch:
+    database = couch["pa3"]
 else:
-    database = couch.create("pa2")
+    database = couch.create("pa3")
 
 # we keep reading and printing
 for msg in consumer:

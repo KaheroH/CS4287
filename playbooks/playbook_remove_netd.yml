@@ -1,8 +1,0 @@
----
-- name: Deleteing the net.d/ directory
-  file:
-      name: /etc/cni/net.d/
-      state: absent
-
-...
-

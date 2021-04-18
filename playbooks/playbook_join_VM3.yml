@@ -1,0 +1,10 @@
+---
+- name: Copying the join command to VM3
+  copy: 
+    src: ./join_command
+    dest: ./join_command
+
+- name: Executing the join command
+  shell: sh ./join_command/join_command/129.114.26.34/join_command
+...
+

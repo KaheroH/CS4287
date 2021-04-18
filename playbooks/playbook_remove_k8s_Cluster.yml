@@ -4,8 +4,13 @@
 
 - name: Deleteing the ~/.kube directory
   file:
-    name: ./.kube
+    name: root/.kube
     state: absent
+
+- name: Deleteing the net.d/ directory
+  file:
+      name: /etc/cni/net.d/
+      state: absent
 
 ...
 

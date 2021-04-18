@@ -1,0 +1,1 @@
+kubeadm join 10.212.96.62:6443 --token vgm7ie.7y80usrcy1au0gs2     --discovery-token-ca-cert-hash sha256:eab255be41ca42c089cecdda9091451d5e088aafb654994d8cde6665dd7e227f 

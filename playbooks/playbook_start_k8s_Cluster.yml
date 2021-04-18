@@ -4,19 +4,19 @@
 
 - name: making the .kube directory
   file:
-    name: ./.kube
+    name: /root/.kube
     state: directory
 
 - name: copying the config file over
   copy:
     src: /etc/kubernetes/admin.conf
-    dest: ./.kube/config
+    dest: /root/.kube/config
     remote_src: yes
     owner: "1000"
     group: "1011"
-  
+
 - name: Setting up Flannel
-  command: "{{item}}"
+  shell: "{{item}}"
   with_items: 
     - kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
     - kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
@@ -25,9 +25,15 @@
   shell: kubeadm token create --print-join-command
   register: joinCommand
 
+- name: placing the join command into a file
+  copy:
+    content: "{{ joinCommand.stdout_lines[0] }}"
+    dest: ./join_command
+    remote_src: yes
+
 - name: Fetching the join command from VM2
   fetch:
-    src: "{{ joinCommand.stdout_lines[0] }}"
+    src: ./join_command
     dest: ./join_command
 
 ...

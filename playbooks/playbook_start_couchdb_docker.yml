@@ -1,0 +1,4 @@
+---
+- name: Spin up CouchDB
+  shell: docker run -p 30002:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password -d couchdb
+...

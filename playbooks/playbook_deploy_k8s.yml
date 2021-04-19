@@ -1,0 +1,19 @@
+---
+
+- name: Deploy k8s services
+  shell: "{{item}}"
+  with_items:  
+    - kubectl apply -f svc_ymls/zookeeper-svc.yml
+    - kubectl apply -f svc_ymls/kafka1-svc.yml
+    - kubectl apply -f svc_ymls/kafka2-svc.yml
+    - kubectl apply -f svc_ymls/consumer-svc.yml
+
+- name: Deploy k8s jobs
+  shell: "{{item}}"
+  with_items: 
+    - kubectl apply -f job_ymls/zookeeper-job.yml
+    - kubectl apply -f job_ymls/kafka1-job.yml
+    - kubectl apply -f job_ymls/kafka2-job.yml
+    - kubectl apply -f job_ymls/consumer-job.yml	
+
+...	

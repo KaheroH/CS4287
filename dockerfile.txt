@@ -6,8 +6,6 @@ FROM ubuntu:latest
 RUN apt-get -y update && apt-get install -y net-tools python3 gcc
 RUN apt-get install -y python3-dev python3-pip
 RUN python3 -m pip install --upgrade pip
-#RUN pip3 install --upgrade numpy
-#RUN apt-get install -y openjdk-11-jre-headless
 # Install "software-properties-common" (for the "add-apt-repository")
 # Install OpenJDK-8
 # Next, copy our kafka and consumer into container image
@@ -29,19 +27,8 @@ RUN apt-get update && \
 # Setup JAVA_HOME -- useful for docker commandline
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
-#
-# Run a command shell (for Swarm and Kubernetes, we comment this out)
-#CMD /bin/bash
-#RUN curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | apt-key add -
-#RUN echo "deb https://apache.bintray.com/couchdb-deb focal main" | tee -a /etc/apt/sources.list
 
-#RUN echo "couchdb couchdb/mode select standalone seen true" | debconf-set-selections
-#RUN echo "couchdb couchdb/bindaddress string 0.0.0.0 seen true" | debconf-set-selections
-#RUN echo "couchdb couchdb/adminpass password password123 seen true" | debconf-set-selections
-#RUN echo "couchdb couchdb/adminpass_again password password123 seen true" | debconf-set-selections
-#RUN apt-get update
-#RUN apt-get upgrade -y
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes couchdb
+
 RUN pip3 install couchdb
 RUN pip3 install kafka-python
 COPY consumer.py consumer.py

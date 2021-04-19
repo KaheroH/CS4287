@@ -1,0 +1,9 @@
+---
+- name: Copy a file to another machine
+  ansible.builtin.copy:
+    src: /home/vagrant/docker_and_k8s/daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: restart Docker
+  ansible.builtin.shell: systemctl restart docker  
+...

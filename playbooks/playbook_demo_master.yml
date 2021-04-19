@@ -1,40 +1,152 @@
 ---
-#
-# EECS 4287/5287: Principles of Cloud Computing
-# Author: Aniruddha Gokhale
-# Created: Fall 2017
-# Modified: Fall 2020
-#
-# This playbook is our demo master file
-# The goal is to show how to have a single master file which then
-# includes multiple plays according to some well-designed choreography
-#
-# This file is similar to the one in the AnsibleOnly_Local_and_Cloud folder
-# For now I just kept one play in here but feel free to add more
   
-
-
-
-# - name: "Play 1: Create VMs on Chameleon"
+# - name: "Play 1: Download Kafka TGZ"
   # hosts: MyLocalVMs
+  # become: yes
   # remote_user: vagrant
   # collections:
    # - ansible-base
    # - openstack.cloud.collection
  
   # tasks:
-  # - import_tasks: ./playbook_create_cloud_vm.yml
+  # - import_tasks: ./playbook_install_kafka_tgz.yml
 
-# - name: "Play 2: Install Kafka"
-  # hosts: MyChameleonVMs
-  # remote_user: cc
-  # collections:   # this is new starting with Ansible 2.9 (akin to importing package)
-    # - openstack.cloud
-  # gather_facts: yes
-  # become: yes
+
+- name: "Play 2: Create VMs on Chameleon"
+  hosts: MyLocalVMs
+  remote_user: vagrant
+  collections:
+   - ansible-base
+   - openstack.cloud.collection
+ 
+  tasks:
+  - import_tasks: ./playbook_create_cloud_vm.yml
+
+- name: "Play 3: Copy Dockerfile and K8S YAMLs from Vagrant Machine to VM2"
+  hosts: VM2
+  remote_user: cc
+  collections:
+   - ansible-base
+   - openstack.cloud.collection
+ 
+  tasks:
+  - import_tasks: ./playbook_set_up_docker_k8s.yml
   
+- name: "Play 4: Install Kafka on VM2"
+  hosts: VM2
+  remote_user: cc
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - import_tasks: ./playbook_install_app_on_cloud_vm.yml
+
+- name: "Play 4: Set UFW Limits"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - import_tasks: ./playbook_set_ufw_limits.yml
+  
+- name: "Play 4: Install Docker"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  become: yes
+  gather_facts: yes
+  collections:
+  - ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_Docker_Install.yml
+
+- name: "Play 5: Create Private Registry for Docker Images"
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  gather_facts: yes
+  collections:
+  - ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_create_private_registry.yml 
+
+- name: "Play 6: Adding Registry Information"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  become: yes
+  gather_facts: yes
+  collections:
+  - ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_add_registry_information.yml  
+  
+- name: "Play 7: Install Kubernetes"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  become: yes
+  gather_facts: yes
+  collections:
+  - ansible-base
+  
+  tasks:
+  - import_tasks: ./playbook_Kubernetes_Install.yml    
+
+- name: "Play 8: Create the Kube cluster"
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_start_k8s_Cluster.yml
+
+- name: "Play 9: Taint the master for Kube"
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks: 
+  - include_tasks: ./playbook_taint_master.yml
+
+- name: "Play 10: Joining VM3 to the cluster"
+  hosts: VM3
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_join_VM3.yml  
+  
+- name: "Play 11: Create Docker Image"
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_create_dockerimage.yml
+  
+- name: "Play 13: start couchdb docker"
+  hosts: VM3
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_start_couchdb_docker.yml  
+
+- name: "Play 14: Deploy k8s"
+  hosts: VM2
+  remote_user: cc
+  become: yes
+  tasks:
+  - include_tasks: ./playbook_deploy_k8s.yml
+
+# - name: "Play 15: Run Producer"
+  # hosts: MyLocalVMs
+  # remote_user: cc
+  # become: yes
   # tasks:
-  # - include_tasks: ./playbook_install_app_on_cloud_vm.yml
+  # - include_tasks: ./playbook_run_producer.yml 
+    
   
 # - name: "Play 3a: Edit Server Properties on VM2"
   # hosts: VM2
@@ -85,27 +197,6 @@
   # tasks:
   # - import_tasks: ./playbook_CouchDB_Install.yml
 
-# - name: "Install Docker"
-  # hosts: MyChameleonVMs
-  # remote_user: cc
-  # become: yes
-  # gather_facts: yes
-  # collections:
-  # - ansible-base
-  
-  # tasks:
-  # - import_tasks: ./playbook_Docker_Install.yml
-  
-# - name: "Install Kubernetes"
-#   hosts: MyChameleonVMs
-#   remote_user: cc
-#   become: yes
-#   gather_facts: yes
-#   collections:
-#   - ansible-base
-  
-#   tasks:
-#   - import_tasks: ./playbook_Kubernetes_Install.yml  
 
 # - name: "Play 6: Start Zookeeper on VM2"
   # hosts: VM2
@@ -148,25 +239,6 @@
 #  tasks:
 #  - include_tasks: ./playbook_remove_k8s_Cluster.yml
 
-#- name: Create the Kube cluster
-#  hosts: VM2
-#  remote_user: cc
-#  become: yes
-#  tasks:
-#  - include_tasks: ./playbook_start_k8s_Cluster.yml
 
-#- name: Taint the master for Kube
-#  hosts: VM2
-#  remote_user: cc
-#  become: yes
-#  tasks: 
-#  - include_tasks: ./playbook_taint_master.yml
-
-- name: Joining VM3 to the cluster
-  hosts: VM3
-  remote_user: cc
-  become: yes
-  tasks:
-  - include_tasks: ./playbook_join_VM3.yml
 ...
 

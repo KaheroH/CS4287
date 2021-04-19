@@ -1,0 +1,26 @@
+---
+- name: UFW Limit
+  shell: sudo ufw limit 9092
+  
+- name: UFW Limit
+  shell: sudo ufw limit 2181
+
+- name: UFW Limit
+  shell: sudo ufw limit 5984
+
+- name: UFW Limit
+  shell: sudo ufw limit 30000
+
+- name: UFW Limit
+  shell: sudo ufw limit 30001
+
+- name: UFW Limit
+  shell: sudo ufw limit 30002
+
+- name: UFW Limit
+  shell: sudo ufw limit 30003
+
+- name: UFW Limit
+  shell: sudo ufw limit 30004  
+  
+...

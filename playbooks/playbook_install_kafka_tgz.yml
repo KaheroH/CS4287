@@ -1,0 +1,12 @@
+---
+#
+# This playbook will install the Kafka Getting Started package
+- name: Download Kafka
+  get_url: 
+    url: https://mirrors.sonic.net/apache/kafka/2.7.0/kafka_2.13-2.7.0.tgz
+    dest: /home/vagrant/docker_and_k8s/Kafka.tgz     
+- name: Extract tgz
+  ansible.builtin.shell: tar -xvzf /home/vagrant/docker_and_k8s/Kafka.tgz -C /home/vagrant/docker_and_k8s/
+
+...
+

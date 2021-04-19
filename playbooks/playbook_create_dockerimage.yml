@@ -1,0 +1,11 @@
+---
+- name: Build Docker Image
+  shell: docker build -f dockerfile -t dockerimage .
+  
+- name: Tag Docker Image
+  shell: docker tag dockerimage:latest 129.114.26.34:5000/dockerimage
+
+- name: Push Docker Image
+  shell: docker push 129.114.26.34:5000/dockerimage
+  
+...

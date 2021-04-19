@@ -4,11 +4,11 @@
 # Our cloud can be Horizon Cloud VM or Chameleon VMs or AWS VMs
 - name: Download Kafka
   get_url: 
-    url: https://mirror.jframeworks.com/apache/kafka/2.7.0/kafka_2.13-2.7.0.tgz
-    dest: ./Kafka.tgz     
+    url: https://mirrors.sonic.net/apache/kafka/2.7.0/kafka_2.13-2.7.0.tgz
+    dest: ./kafka_2.13-2.7.0.tgz   
 #  - name: Install Kafka
 #    ansible.builtin.shell: curl https://mirror.jframeworks.com/apache/kafka/2.7.0/kafka_2.13-2.7.0.tgz -o ./Kafka.tgz
 - name: Extract tgz
-  ansible.builtin.shell: tar -xvzf ./Kafka.tgz
+  ansible.builtin.shell: tar -xvzf ./kafka_2.13-2.7.0.tgz
 ...
 

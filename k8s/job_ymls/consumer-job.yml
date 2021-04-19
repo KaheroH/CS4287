@@ -12,7 +12,7 @@ spec:
         kubernetes.io/hostname: harriott-vm
       containers:
       - name: couchdb
-        image: 129.114.26.34:5000/dockerimage1
+        image: 129.114.26.34:5000/dockerimage
         imagePullPolicy: Always
         #command: ["tail"]
         #args: ["-f", "/dev/null"]

@@ -1,0 +1,21 @@
+---
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: /home/vagrant/docker_and_k8s/dockerfile
+    dest: ~/dockerfile
+
+- name: Copy job ymls
+  ansible.builtin.copy:
+    src: /home/vagrant/docker_and_k8s/job_ymls
+    dest: ~/
+
+- name: Copy svc ymls
+  ansible.builtin.copy:
+    src: /home/vagrant/docker_and_k8s/svc_ymls
+    dest: ~/
+
+- name: Copy Consumer Code
+  ansible.builtin.copy:
+    src: /home/vagrant/code/consumer.py
+    dest: ~/consumer.py    
+...

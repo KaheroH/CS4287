@@ -1,16 +1,4 @@
 ---
-#
-# EECS 4287/5287: Principles of Cloud Computing
-# Author: Aniruddha Gokhale
-# Created: Fall 2016
-# Modified: Fall 2018
-# Modified: Fall 2020
-#
-# In this playbook, we will show how to remove an installed package via
-# the aptitude module
-#
- 
-                     # the task to be performed
 
 - name: Installing prereqs
   apt: 
@@ -26,13 +14,24 @@
     - swap
     - none
 
+#Might need to do this:
+#- name: Delete kubernetes.list
+  #ansible.builtin.shell: rm /etc/apt/sources.list.d/kubernetes.list
+  
 - name: Disable swap
   command: swapoff -a
   when: ansible_swaptotal_mb > 0
 
-- name: coppying a file to kubernetes.list
-  shell: echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" \
-   | sudo tee -a /etc/apt/sources.list.d/kubernetes.list  
+- name: Add an apt signing key for Kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+      
+- name: Adding apt repository for Kubernetes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list 
      
 - name: Installing
   apt: 

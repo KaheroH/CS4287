@@ -1,1 +1,1 @@
-kubeadm join 10.212.96.62:6443 --token vgm7ie.7y80usrcy1au0gs2     --discovery-token-ca-cert-hash sha256:eab255be41ca42c089cecdda9091451d5e088aafb654994d8cde6665dd7e227f 
+kubeadm join 10.212.96.11:6443 --token rbta73.vzechrw0ajlhr5rn --discovery-token-ca-cert-hash sha256:df0e20a5c33c68a99f864df639a50e5719cb22a8403826cb6a2c727b43781855 

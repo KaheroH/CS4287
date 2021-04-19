@@ -1,0 +1,4 @@
+---
+- name: Run Producer
+  shell: python3 ~/code/producer.py
+...  

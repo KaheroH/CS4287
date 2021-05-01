@@ -1,54 +1,46 @@
-#
-#
-# Author: Aniruddha Gokhale
-# CS4287-5287: Principles of Cloud Computing, Vanderbilt University
-#
-# Created: Sept 6, 2020
-#
-# Purpose:
-#
-#    Demonstrate the use of Kafka Python streaming APIs.
-#    In this example, we use the "top" command and use it as producer of events for
-#    Kafka. The consumer can be another Python program that reads and dumps the
-#    information into a database OR just keeps displaying the incoming events on the
-#    command line consumer (or consumers)
-#
-
 import os   # need this for popen
 import time # for sleep
 import json
+import csv
 from kafka import KafkaProducer  # producer of events
-
-# We can make this more sophisticated/elegant but for now it is just
-# hardcoded to the setup I have on my local VMs
 
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
 producer = KafkaProducer (bootstrap_servers="129.114.26.34:30001", 
-                                          acks=1, value_serializer=lambda v:                         json.dumps(v).encode('utf-8'))  # wait for leader to write to log
+                                          acks=1, 
+                                          value_serializer=lambda v:json.dumps(v).encode('utf-8'))  # wait for leader to write to log
+                                          
+toAdd = ["id", "timestamp", "value", "property", "plug_id", "household_id", "house_id"]
+with open('energy_part1.csv', "r") as infile:
+    reader = list(csv.reader(infile))
+    reader.insert(0, toAdd)
 
-# say we send the contents 100 times after a sleep of 1 sec in between
-for i in range (100):
+with open('energy_part1.csv', "w") as outfile:
+    writer = csv.writer(outfile)
+    for line in reader:
+        writer.writerow(line)  
 
-    # get the output of the top command
-    process = os.popen ("top -n 1 -b")
+# create a dictionary
 
-    # read the contents that we wish to send as topic content
-    contents = process.read ()
-
-    # send the contents under topic utilizations. Note that it expects
-    # the contents in bytes so we convert it to bytes.
-    #
-    # Note that here I am not serializing the contents into JSON or anything
-    # as such but just taking the output as received and sending it as bytes
-    # You will need to modify it to send a JSON structure, say something
-    # like <timestamp, contents of top>
-    #
-    producer.send ("utilizations", {'content' : contents})
-    producer.flush ()   # try to empty the sending buffer
-
-    # sleep a second
-    time.sleep (1)
-
-# we are done
+     
+# Open a csv reader called DictReader
+with open('energy_part1.csv', encoding='utf-8') as csvf:
+    csvReader = csv.DictReader(csvf)
+         
+    # Convert each row into a dictionary
+    # and add it to data
+    for x in range(500):
+        data = {}
+        for rows in csvReader:
+            # Assuming a column named 'No' to
+            # be the primary key
+            key = rows['id']
+            data[key] = rows
+            if(len(data)>= 1000):
+                toSend = json.dumps(data, indent=4)
+                producer.send ("utilizations", {'content' : data})
+                producer.flush ()   # try to empty the sending buffer
+                time.sleep (0.2)
+                break                        
+        
 producer.close ()

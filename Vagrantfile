@@ -76,50 +76,50 @@ Vagrant.configure("2") do |config|
   # the ending SHELL. But I am showing a different way to do it by
   # defining a separate shell script that gets called. See below.
   config.vm.provision "shell", inline: <<-SHELL, privileged: false
-      mkdir -p /home/vagrant/.ssh
-      mkdir -p /home/vagrant/.ansible
-      mkdir -p /home/vagrant/.config
-      mkdir -p /home/vagrant/.config/openstack
-	  mkdir -p /home/vagrant/code
-	  mkdir -p /home/vagrant/docker_and_k8s
+      # mkdir -p /home/vagrant/.ssh
+      # mkdir -p /home/vagrant/.ansible
+      # mkdir -p /home/vagrant/.config
+      # mkdir -p /home/vagrant/.config/openstack
+	  # mkdir -p /home/vagrant/code
+	  # mkdir -p /home/vagrant/docker_and_k8s
   SHELL
   
 config.vm.provision "shell", inline: <<-SHELL
-	sudo apt update
-	sudo apt install software-properties-common
-	sudo add-apt-repository ppa:deadsnakes/ppa
-	sudo apt update
-	sudo apt install -y python3.8
-	sudo apt update
-	sudo apt install -y python3-pip
-	sudo apt-get install -y python3-setuptools
-	sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
-	sudo update-alternatives --set python /usr/bin/python3.8
+	# sudo apt update
+	# sudo apt install software-properties-common
+	# sudo add-apt-repository ppa:deadsnakes/ppa
+	# sudo apt update
+	# sudo apt install -y python3.8
+	# sudo apt update
+	# sudo apt install -y python3-pip
+	# sudo apt-get install -y python3-setuptools
+	# sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+	# sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
+	# sudo update-alternatives --set python /usr/bin/python3.8
 	
-	sudo -H pip3 install --upgrade ansible
-	sudo pip3 install --upgrade decorator
-	sudo python3 -m pip install --upgrade pip setuptools wheel
-	sudo pip3 install --ignore-installed --upgrade openstacksdk
-	sudo python3 -m pip install --upgrade openstacksdk
-	sudo pip3 install --ignore-installed --upgrade openstacksdk future
+	# sudo -H pip3 install --upgrade ansible
+	# sudo pip3 install --upgrade decorator
+	# sudo python3 -m pip install --upgrade pip setuptools wheel
+	# sudo pip3 install --ignore-installed --upgrade openstacksdk
+	# sudo python3 -m pip install --upgrade openstacksdk
+	# sudo pip3 install --ignore-installed --upgrade openstacksdk future
 	#sudo ansible-galaxy collection install openstack.cloud
  SHELL
   
  # let's also copy our ansible.cfg, MyInventory, cloud.yaml file, ssh key, and playbooks
- config.vm.provision "file", source: "./.ansible.cfg.txt", destination: "~/.ansible.cfg"
- config.vm.provision "file", source: "./MyInventory.txt", destination: "~/.ansible/MyInventory"
- config.vm.provision "file", source: "./clouds.yml", destination: "~/.config/openstack/clouds.yml"
- config.vm.provision "file", source: "./keys/martin_key", destination: "~/.ssh/martin_key"
- config.vm.provision "file", source: "./keys/kahero_key", destination: "~/.ssh/kahero_key"
+ # config.vm.provision "file", source: "./.ansible.cfg.txt", destination: "~/.ansible.cfg"
+ # config.vm.provision "file", source: "./MyInventory.txt", destination: "~/.ansible/MyInventory"
+ # config.vm.provision "file", source: "./clouds.yml", destination: "~/.config/openstack/clouds.yml"
+ # config.vm.provision "file", source: "./keys/martin_key", destination: "~/.ssh/martin_key"
+ # config.vm.provision "file", source: "./keys/kahero_key", destination: "~/.ssh/kahero_key"
 
- config.vm.provision "file", source: "./producer.py", destination: "~/code/producer.py"	
- config.vm.provision "file", source: "./consumer.py", destination: "~/code/consumer.py"	
- config.vm.provision "file", source: "./dockerfile.txt", destination: "~/docker_and_k8s/dockerfile"
- config.vm.provision "file", source: "./k8s/job_ymls", destination: "~/docker_and_k8s/job_ymls"
- config.vm.provision "file", source: "./k8s/svc_ymls", destination: "~/docker_and_k8s/svc_ymls"
+ # config.vm.provision "file", source: "./producer.py", destination: "~/code/producer.py"	
+ # config.vm.provision "file", source: "./consumer.py", destination: "~/code/consumer.py"	
+ # config.vm.provision "file", source: "./dockerfile.txt", destination: "~/docker_and_k8s/dockerfile"
+ # config.vm.provision "file", source: "./k8s/job_ymls", destination: "~/docker_and_k8s/job_ymls"
+ # config.vm.provision "file", source: "./k8s/svc_ymls", destination: "~/docker_and_k8s/svc_ymls"
 
- config.vm.provision "file", source: "./daemon.json", destination: "/home/vagrant/docker_and_k8s/daemon.json"
+ # config.vm.provision "file", source: "./daemon.json", destination: "/home/vagrant/docker_and_k8s/daemon.json"
   
   # make sure the permissions on the  pem file are not too open.
   # Note, here I show you using inline and privileged: false so the inline
